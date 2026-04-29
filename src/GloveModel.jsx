@@ -41,7 +41,7 @@ const FingerSensor = ({ position, length }) => {
   );
 };
 
-const RealisticGlove = () => {
+const RealisticGlove = ({ isMobile }) => {
   const groupRef = useRef();
 
   useFrame((state) => {
@@ -53,7 +53,7 @@ const RealisticGlove = () => {
   });
 
   return (
-    <group ref={groupRef} rotation={[0.4, -0.6, 0]} scale={3.6} position={[0, -0.5, 0]}>
+    <group ref={groupRef} rotation={[0.4, -0.6, 0]} scale={isMobile ? 2.5 : 3.6} position={[0, -0.5, 0]}>
       {/* Main Glove - White Leather */}
       <mesh castShadow>
         <boxGeometry args={[1.5, 1.8, 0.45]} />
@@ -112,18 +112,18 @@ const RealisticGlove = () => {
   );
 };
 
-const GloveModel = () => {
+const GloveModel = ({ isMobile }) => {
   return (
-    <div style={{ width: '100%', height: '100%', cursor: 'grab' }}>
+    <div style={{ width: '100%', height: '100%', minHeight: isMobile ? '300px' : '800px', cursor: 'grab' }}>
       <Canvas shadows antialias>
-        <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={50} near={0.001} far={100} />
+        <PerspectiveCamera makeDefault position={[0, 0, isMobile ? 6 : 5]} fov={50} near={0.001} far={100} />
         <ambientLight intensity={0.6} />
         <spotLight position={[10, 10, 10]} angle={0.2} penumbra={1} intensity={2} castShadow />
         <pointLight position={[-10, 5, 5]} intensity={1.5} color="#00f2fe" />
         <Environment preset="studio" />
         
         <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-          <RealisticGlove />
+          <RealisticGlove isMobile={isMobile} />
         </Float>
 
         <ContactShadows position={[0, -5, 0]} opacity={0.6} scale={20} blur={3} far={10} />

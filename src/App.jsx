@@ -76,27 +76,65 @@ const FutureScopeItem = ({ icon, title, desc }) => (
 );
 
 function App() {
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className="min-h-screen selection:bg-cyan-500/30">
       {/* Hero Section */}
-      <section style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '40px 0', overflow: 'hidden' }}>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '1800px', padding: '0 5%' }}>
+      <section style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        minHeight: '100vh', 
+        padding: isMobile ? '80px 20px' : '40px 0', 
+        overflow: 'hidden' 
+      }}>
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: isMobile ? 'column' : 'row', 
+          alignItems: 'center', 
+          justifyContent: 'space-between', 
+          width: '100%', 
+          maxWidth: '1800px', 
+          padding: isMobile ? '0' : '0 5%',
+          gap: isMobile ? '40px' : '0'
+        }}>
           {/* Text Content - Left */}
-          <div style={{ width: '45%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textAlign: 'left', zIndex: 10 }}>
+          <div style={{ 
+            width: isMobile ? '100%' : '45%', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: isMobile ? 'center' : 'flex-start', 
+            textAlign: isMobile ? 'center' : 'left', 
+            zIndex: 10 
+          }}>
             <span className="px-6 py-3 rounded-full bg-cyan-500/10 text-cyan-400 text-sm font-bold mb-8 inline-block border border-cyan-500/20">
               SMART GLOVE PROJECT
             </span>
-            <h1 className="font-extrabold mb-8 tracking-tighter text-7xl lg:text-9xl leading-[0.9]">
+            <h1 className="font-extrabold mb-8 tracking-tighter text-5xl lg:text-9xl leading-[1.1] lg:leading-[0.9]">
               Smart <span className="gradient-text">Glove</span> for Sign Language Translation
             </h1>
-            <p className="text-2xl lg:text-3xl text-gray-400 mb-12 max-w-xl leading-relaxed">
+            <p className="text-xl lg:text-3xl text-gray-400 mb-12 max-w-xl leading-relaxed">
               Real-time sign language translation. Bridging the gap between worlds with cutting-edge wearable technology.
             </p>
           </div>
-
+          
           {/* 3D Model - Right */}
-          <div style={{ width: '55%', height: '900px', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <GloveModel />
+          <div style={{ 
+            width: isMobile ? '100%' : '55%', 
+            height: isMobile ? '400px' : '900px', 
+            position: 'relative', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center' 
+          }}>
+            <GloveModel isMobile={isMobile} />
           </div>
         </div>
       </section>
